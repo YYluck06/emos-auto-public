@@ -1,6 +1,6 @@
 {
   "snapshot": {
-    "at": "2026-11-06T14:43:40.085Z",
+    "at": "2026-11-06T14:55:04.663Z",
     "user_id": "eJ3ZV2P9Ks",
     "username": "returnperiod",
     "carrot": 23,
@@ -17,7 +17,7 @@
     "invite_at": "2026-11-06 22:25:20",
     "egress": {
       "via": "direct",
-      "ip": "172.214.45.254"
+      "ip": "20.55.87.189"
     }
   },
   "alerts": [
