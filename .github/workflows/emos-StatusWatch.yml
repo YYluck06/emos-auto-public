@@ -35,7 +35,15 @@ jobs:
       - name: 采集快照
         env:
           EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
-        run: node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"
+        run: |
+          if ! node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"; then
+            echo '### 采集失败，原样输出：' >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat emos/status.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat emos/status.json
+            exit 1
+          fi
 
       - name: 回写公开库
         run: |
