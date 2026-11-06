@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-06T14:36:17.127Z",
+  "user_id": "eJ3ZV2P9Ks",
+  "username": "returnperiod",
+  "carrot": 23,
+  "realm": "练气期二层",
+  "is_viewing": true,
+  "invite_remaining": 0,
+  "invite_count": 0,
+  "slot_remaining": 2,
+  "is_can_upload": false,
+  "must_otp": true,
+  "server_video": "https://video.emos.best",
+  "telegram_bound": true,
+  "invited_by": "eK3RYM6EGs",
+  "invite_at": "2026-11-06 22:25:20",
+  "last_sign": {
+    "at": "2026-11-06T14:36:17.127Z",
+    "sign": "duplicate",
+    "earn_point": 0,
+    "continuous_days": null,
+    "carrot": 23,
+    "is_viewing": true,
+    "invite_remaining": 0
+  }
+}
