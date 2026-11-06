@@ -1,5 +1,8 @@
 # emos-auto-public
 
+[![emos-AutoCheckIn](https://github.com/YYluck06/emos-auto-public/actions/workflows/emos-AutoCheckIn.yml/badge.svg)](https://github.com/YYluck06/emos-auto-public/actions/workflows/emos-AutoCheckIn.yml)
+[![emos-StatusWatch](https://github.com/YYluck06/emos-auto-public/actions/workflows/emos-StatusWatch.yml/badge.svg)](https://github.com/YYluck06/emos-auto-public/actions/workflows/emos-StatusWatch.yml)
+
 [emos](https://emos.best)（somebyte 生态的公益影音服）日常任务 —— **公开 runner 库**。
 
 > 本库**没有一行业务代码**：只有 GitHub Actions workflow + 一份非敏感状态（`emos/`）。
