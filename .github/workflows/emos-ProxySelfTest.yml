@@ -1,0 +1,47 @@
+name: emos-ProxySelfTest
+
+# 一次性自检：验证「机场分享链接 → sing-box → 本地 mixed 入站」这条链路
+# 在 Linux runner 上能不能装好、生成配置、通过 sing-box check、把端口拉起来。
+# 用一个必然连不通的假节点跑，预期看到「端口在听但流量出不去」——
+# 这说明除了「节点本身」以外的每一环都通了。PROXY_OPTIONAL=1 让结论保持绿色。
+# 自检完可删掉这个文件。
+on:
+  workflow_dispatch:
+    inputs:
+      node:
+        description: '要自检的节点链接（默认假 hy2 节点）'
+        required: false
+        default: 'hy2://pw@127.0.0.1:4433?sni=example.com'
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 取出公开库
+        uses: actions/checkout@v4
+
+      - name: 取出私有核心库 → app/
+        uses: actions/checkout@v4
+        with:
+          repository: YYluck06/emos-auto-core
+          token: ${{ secrets.CORE_PAT }}
+          path: app
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 准备代理出口（假节点，预期停在「流量出不去」）
+        env:
+          EMOS_PROXY: ${{ inputs.node }}
+          PROXY_OPTIONAL: '1'
+        run: |
+          bash app/scripts/setup-proxy.sh || true
+          echo "--- 生成的配置（已打码）---"
+          sed -E 's#("(server|password|uuid|username)"[[:space:]]*:[[:space:]]*")[^"]*#\1***#g' /tmp/emosproxy/config.json 2>/dev/null | head -40 || true
+          echo "--- sing-box 版本 ---"
+          /tmp/emosproxy/sing-box version || true
