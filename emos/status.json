@@ -1,6 +1,6 @@
 {
   "snapshot": {
-    "at": "2026-11-06T14:35:56.126Z",
+    "at": "2026-11-06T14:43:40.085Z",
     "user_id": "eJ3ZV2P9Ks",
     "username": "returnperiod",
     "carrot": 23,
@@ -14,7 +14,11 @@
     "server_video": "https://video.emos.best",
     "telegram_bound": true,
     "invited_by": "eK3RYM6EGs",
-    "invite_at": "2026-11-06 22:25:20"
+    "invite_at": "2026-11-06 22:25:20",
+    "egress": {
+      "via": "direct",
+      "ip": "172.214.45.254"
+    }
   },
   "alerts": [
     {
