@@ -42,6 +42,7 @@ jobs:
         env:
           EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
           EMOS_MOTTO: ${{ inputs.motto }}
+          EMOS_PROXY: ${{ secrets.EMOS_PROXY || vars.EMOS_PROXY }}
           OUT_DIR: emos
           STATE_DIR: app/state
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}

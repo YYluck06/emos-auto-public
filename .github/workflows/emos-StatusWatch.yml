@@ -35,6 +35,7 @@ jobs:
       - name: 采集快照
         env:
           EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
+          EMOS_PROXY: ${{ secrets.EMOS_PROXY || vars.EMOS_PROXY }}
         run: |
           if ! node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"; then
             echo '### 采集失败，原样输出：' >> "$GITHUB_STEP_SUMMARY"
