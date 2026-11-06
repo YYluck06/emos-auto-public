@@ -1,0 +1,48 @@
+name: emos-StatusWatch
+
+# 每天推一次账号快照：萝卜/境界/观影资格/邀请名额/卡槽，
+# 并在「萝卜够 800（E 魔盒邀请套餐）/ 3000（官方邀请）/ 100（固定密码）」时给出提醒。
+on:
+  schedule:
+    - cron: '0 13 * * *' # UTC 13:00 = 北京时间 21:00
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: emos-status
+  cancel-in-progress: false
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 取出私有核心库 → app/
+        uses: actions/checkout@v4
+        with:
+          repository: YYluck06/emos-auto-core
+          token: ${{ secrets.CORE_PAT }}
+          path: app
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 采集快照
+        env:
+          EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
+        run: node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"
+
+      - name: 回写公开库
+        run: |
+          git config user.name  "emos-bot"
+          git config user.email "emos-bot@users.noreply.github.com"
+          git add emos/status.json
+          if git diff --cached --quiet; then echo "无变化"; else
+            git commit -m "chore(status): $(date -u +%FT%TZ)"
+            git push
+          fi

@@ -1,0 +1,71 @@
+name: emos-AutoCheckIn
+
+# 每天自动签到（+1~5 萝卜），并把账号快照回写到本库 + 私有核心库。
+# 代码不在本库：本库只有这个 workflow，真正的脚本在私有库 YYluck06/emos-auto-core。
+on:
+  schedule:
+    - cron: '40 0 * * *' # UTC 00:40 = 北京时间 08:40
+  workflow_dispatch:
+    inputs:
+      motto:
+        description: '今日寄语（≤10 字，留空用默认「签到」）'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: emos-checkin
+  cancel-in-progress: false
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 取出公开库（存快照状态）
+        uses: actions/checkout@v4
+
+      - name: 取出私有核心库 → app/
+        uses: actions/checkout@v4
+        with:
+          repository: YYluck06/emos-auto-core
+          token: ${{ secrets.CORE_PAT }}
+          path: app
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 签到 + 快照
+        env:
+          EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
+          EMOS_MOTTO: ${{ inputs.motto }}
+          OUT_DIR: emos
+          STATE_DIR: app/state
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: node app/scripts/daily.mjs
+
+      - name: 回写公开库（time.txt / state.json）
+        run: |
+          git config user.name  "emos-bot"
+          git config user.email "emos-bot@users.noreply.github.com"
+          git add emos
+          if git diff --cached --quiet; then echo "无变化"; else
+            git commit -m "chore(state): $(date -u +%FT%TZ)"
+            git push
+          fi
+
+      - name: 回写私有库（签到历史）
+        continue-on-error: true # 状态回写失败不影响任务结论
+        run: |
+          cd app
+          git config user.name  "emos-bot"
+          git config user.email "emos-bot@users.noreply.github.com"
+          git add state
+          if git diff --cached --quiet; then echo "无变化"; else
+            git commit -m "chore(state): $(date -u +%FT%TZ)"
+            git push
+          fi

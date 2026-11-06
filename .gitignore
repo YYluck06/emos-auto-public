@@ -1,0 +1,6 @@
+# 只提交状态，不提交任何账号信息
+*.token
+.env
+.env.*
+*.log
+node_modules/
