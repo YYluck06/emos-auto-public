@@ -46,7 +46,13 @@ jobs:
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
           TG_PROXY: ${{ secrets.TG_PROXY || '' }}
         run: |
-          if ! node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"; then
+          set +e
+          node app/scripts/status.mjs > emos/status.json 2> step.err
+          rc=$?
+          # 把 stderr（出口/告警/Telegram 结果）同时打到日志和 Job Summary，方便排查
+          cat step.err
+          { echo '## emos 快照'; echo '```'; cat step.err; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$rc" != "0" ]; then
             echo '### 采集失败，原样输出：' >> "$GITHUB_STEP_SUMMARY"
             echo '```json' >> "$GITHUB_STEP_SUMMARY"
             cat emos/status.json >> "$GITHUB_STEP_SUMMARY"
