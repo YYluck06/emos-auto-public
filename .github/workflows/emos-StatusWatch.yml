@@ -32,10 +32,19 @@ jobs:
         with:
           node-version: '20'
 
+      - name: 准备代理出口（可选；支持机场任意协议，自动装 sing-box）
+        env:
+          EMOS_PROXY: ${{ secrets.EMOS_PROXY || vars.EMOS_PROXY }}
+          PROXY_OPTIONAL: ${{ vars.PROXY_OPTIONAL || '0' }}
+        run: bash app/scripts/setup-proxy.sh
+
       - name: 采集快照
         env:
           EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
           EMOS_PROXY: ${{ secrets.EMOS_PROXY || vars.EMOS_PROXY }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_PROXY: ${{ secrets.TG_PROXY || '' }}
         run: |
           if ! node app/scripts/status.mjs > emos/status.json 2>> "$GITHUB_STEP_SUMMARY"; then
             echo '### 采集失败，原样输出：' >> "$GITHUB_STEP_SUMMARY"

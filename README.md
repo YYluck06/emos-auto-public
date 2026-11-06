@@ -24,19 +24,21 @@
 | --- | --- | --- |
 | `CORE_PAT` | ✅ | 能**只读**克隆私有库 `emos-auto-core` 的 PAT（fine-grained: Contents = Read） |
 | `EMOS_TOKEN` | ✅ | emos 面板 → 点左上角「欢迎」→「当前密钥」，形如 `4005_xxxxxxxxxxxxxxxx` |
-| `TG_BOT_TOKEN` | ⬜ | 想收 Telegram 通知就填 bot token |
-| `TG_CHAT_ID` | ⬜ | 同上，你的 chat id |
-| `EMOS_PROXY` | ⬜ | **出口 IP**：`http://user:pass@1.2.3.4:8080` / `socks5h://1.2.3.4:1080` / `1.2.3.4:8080`；留空=直连 |
+| `TG_BOT_TOKEN` | ⬜ | Telegram bot token（已配置 ✅）：每日签到 + 每晚快照都会推到你的私聊/群 |
+| `TG_CHAT_ID` | ⬜ | Telegram chat id（已配置 ✅） |
+| `TG_PROXY` | ⬜ | 可选：发 Telegram 走哪个代理（Telegram API 被墙时才需要） |
+| `EMOS_PROXY` | ⬜ | **出口 IP**：直通地址 `http://user:pass@1.2.3.4:8080` / `socks5h://1.2.3.4:1080` / `1.2.3.4:8080`，**或机场分享链接** `hy2://` `hysteria2://` `tuic://` `vless://`（含 reality）`vmess://` `trojan://` `ss://`；留空=直连 |
 
-可选仓库变量：`EMOS_MOTTO`（签到寄语，≤10 字）、`EMOS_PROXY`（当默认出口，secret 优先）。
+可选仓库变量：`EMOS_MOTTO`（签到寄语，≤10 字）、`EMOS_PROXY`（当默认出口，secret 优先）、`PROXY_OPTIONAL=1`（节点全挂时允许直连，默认不允许）。
 
-## 代理出口（可以每个库单独配）
+## 代理出口（可以每个库单独配，支持机场任意协议）
 
 - 想换出口 IP 就给本库加 `EMOS_PROXY`，**只影响本库**——想「库 A 走节点 1、库 B 走节点 2」，在各自的库里配各自的，workflow 不用改。
-- 支持 `http` / `https` / `socks5` / `socks5h` / `socks4` / `socks4a`，裸 `host:port` 按 `http://` 处理。
-- `hysteria2://` `vless://` `tuic://` `ss://` 这类分享链接 curl 不认：先用 sing-box 转成本地 socks5 再填。
-- **配了代理却连不通 → 任务直接失败（exit 3），不会偷偷直连**，避免用 runner 的真实 IP 打站。
-- 每次运行都会打印并记录出口 IP（`emos/state.json` 的 `egress` 字段、Actions 摘要里的「出口」一行）。
+- 直通地址：`http` / `https` / `socks5` / `socks5h` / `socks4` / `socks4a`，裸 `host:port` 按 `http://` 处理。
+- **机场分享链接直接贴**：`hy2://` `hysteria2://` `tuic://` `vless://`（支持 `security=reality`）`vmess://` `trojan://` `ss://`。workflow 里多了一步「准备代理出口」，会**自动下载 sing-box v1.13.14**、把链接转成配置、在 `127.0.0.1:2080` 起 mixed 入站（http + socks5 都支持），再让脚本走它。
+- **多节点失败切换**：`EMOS_PROXY` 里用逗号或换行分隔多个节点，按顺序试，第一个通的胜出。
+- **配了代理却连不通 → 任务直接失败（exit 3），不会偷偷直连**，避免用 runner 的真实 IP 打站。确实要允许直连，把变量 `PROXY_OPTIONAL` 设为 `1`。
+- 每次运行都会打印并记录出口 IP（`emos/state.json` 的 `egress` 字段、Actions 摘要里的「出口」一行）；Actions 日志里节点链接、节点主机名、出口 IP 全部 `::add-mask::`。
 
 ## 状态文件
 

@@ -38,6 +38,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: 准备代理出口（可选；支持机场任意协议，自动装 sing-box）
+        env:
+          EMOS_PROXY: ${{ secrets.EMOS_PROXY || vars.EMOS_PROXY }}
+          PROXY_OPTIONAL: ${{ vars.PROXY_OPTIONAL || '0' }}
+        run: bash app/scripts/setup-proxy.sh
+
       - name: 签到 + 快照
         env:
           EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
@@ -47,6 +53,7 @@ jobs:
           STATE_DIR: app/state
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_PROXY: ${{ secrets.TG_PROXY || '' }}
         run: node app/scripts/daily.mjs
 
       - name: 回写公开库（time.txt / state.json）
