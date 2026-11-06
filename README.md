@@ -50,6 +50,16 @@ emos/status.json    # StatusWatch 产出的完整快照 + 告警
 
 `EMOS_TOKEN` 永远不会落盘到本库，也不写进任何文件。
 
+## 三个 workflow
+
+| workflow | 触发 | 干什么 |
+| --- | --- | --- |
+| `emos-AutoCheckIn.yml` | 每天 00:40 UTC（北京 08:40）+ 手动 | 签到 → 快照 → 回写 `emos/`，并把结果推到 Telegram |
+| `emos-StatusWatch.yml` | 每天 13:00 UTC（北京 21:00）+ 手动 | 只出快照 + 告警 → 写 `emos/status.json` + 推 Telegram |
+| `emos-ProxySelfTest.yml` | 仅手动 | **自检代理链路**：随便填一个节点链接，验证「下载 sing-box → 生成配置 → `sing-box check` → 端口 2080 就绪 → 出口探活」这条链路通不通（默认假节点，预期停在「流量出不去」） |
+
+实测过的：`sing-box check` 对 11 种协议（hy2 / hy2+obfs / vless-reality / vless-ws / vless-grpc / vmess-ws / trojan / trojan-ws / ss / ss-2022 / tuic）全通过；CI 里假节点自检能把 sing-box 装好并把端口拉起来；Telegram 在两次 workflow 里都是 `{"ok":true,"status":200}`。
+
 ## 为什么公开库/私有库要拆开
 
 1. **秘密与代码隔离**：公开库只放 workflow，账号密钥统一放 secrets；私有库放实现细节（接口、坑、备选路径）。
