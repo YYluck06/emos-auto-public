@@ -1,0 +1,32 @@
+name: emos-Diag
+
+# 一次性诊断：GitHub runner 能不能直连 emos 各站点（Cloudflare 挑战排查用）
+on:
+  workflow_dispatch:
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: 探针
+        env:
+          EMOS_TOKEN: ${{ secrets.EMOS_TOKEN }}
+        run: |
+          echo "::add-mask::$EMOS_TOKEN"
+          probe () {
+            code=$(curl -s -o /tmp/body -w '%{http_code}' --max-time 20 -H "Authorization: Bearer $EMOS_TOKEN" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' -H 'Accept: application/json' -H 'Accept-Language: zh-CN,zh;q=0.9' "$1" || echo "000")
+            echo "== $1 -> HTTP $code"
+            head -c 160 /tmp/body | tr -d '\n'; echo
+            echo "server: $(curl -sI --max-time 20 "$1" | grep -i '^server:' | head -1)"
+          }
+          probe https://emos.best/api/user
+          probe https://emos.club/api/user
+          probe https://emya.wwzb.de/api/user
+          echo "--- 无 token ---"
+          curl -s -o /tmp/b2 -w 'emos.best/api/user 无token -> %{http_code}\n' --max-time 20 https://emos.best/api/user; head -c 120 /tmp/b2; echo
+          echo "--- 其他站 ---"
+          curl -s -o /dev/null -w 'account.somebyte.org -> %{http_code}\n' --max-time 20 https://account.somebyte.org/
+          curl -s -o /dev/null -w 'exam.zzzj.de5.net -> %{http_code}\n' --max-time 20 https://exam.zzzj.de5.net/
+          echo "--- 出口 IP ---"
+          curl -s --max-time 15 https://api.ipify.org; echo
