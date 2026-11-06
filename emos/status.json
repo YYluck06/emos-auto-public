@@ -1,0 +1,26 @@
+{
+  "snapshot": {
+    "at": "2026-11-06T14:35:56.126Z",
+    "user_id": "eJ3ZV2P9Ks",
+    "username": "returnperiod",
+    "carrot": 23,
+    "realm": "练气期二层",
+    "is_viewing": true,
+    "invite_remaining": 0,
+    "invite_count": 0,
+    "slot_remaining": 2,
+    "is_can_upload": false,
+    "must_otp": true,
+    "server_video": "https://video.emos.best",
+    "telegram_bound": true,
+    "invited_by": "eK3RYM6EGs",
+    "invite_at": "2026-11-06 22:25:20"
+  },
+  "alerts": [
+    {
+      "level": "info",
+      "text": "已有观影资格；Emby 登录用「一次性密码」（面板点一下取，几十秒内有效），凑够 100 萝卜后可以解锁固定密码"
+    }
+  ],
+  "invite_http": 200
+}
