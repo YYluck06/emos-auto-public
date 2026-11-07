@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-06T15:04:04.301Z",
+  "at": "2026-11-07T06:36:05.693Z",
   "user_id": "eJ3ZV2P9Ks",
   "username": "returnperiod",
   "carrot": 23,
@@ -15,14 +15,14 @@
   "invited_by": "eK3RYM6EGs",
   "invite_at": "2026-11-06 22:25:20",
   "egress": {
-    "via": "direct",
-    "ip": "130.131.202.41"
+    "via": "proxy",
+    "ip": "14.136.69.242"
   },
   "last_sign": {
-    "at": "2026-11-06T15:04:04.301Z",
-    "sign": "duplicate",
-    "earn_point": 0,
-    "continuous_days": null,
+    "at": "2026-11-07T06:36:05.693Z",
+    "sign": "signed",
+    "earn_point": 2,
+    "continuous_days": 6,
     "carrot": 23,
     "is_viewing": true,
     "invite_remaining": 0
