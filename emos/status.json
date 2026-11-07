@@ -1,9 +1,9 @@
 {
   "snapshot": {
-    "at": "2026-11-06T15:00:30.353Z",
+    "at": "2026-11-07T17:56:05.705Z",
     "user_id": "eJ3ZV2P9Ks",
     "username": "returnperiod",
-    "carrot": 23,
+    "carrot": 25,
     "realm": "练气期二层",
     "is_viewing": true,
     "invite_remaining": 0,
@@ -16,8 +16,8 @@
     "invited_by": "eK3RYM6EGs",
     "invite_at": "2026-11-06 22:25:20",
     "egress": {
-      "via": "direct",
-      "ip": "64.236.160.16"
+      "via": "proxy",
+      "ip": "14.136.69.242"
     }
   },
   "alerts": [
