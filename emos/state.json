@@ -1,9 +1,9 @@
 {
-  "at": "2026-11-07T06:36:05.693Z",
+  "at": "2026-11-08T06:41:50.797Z",
   "user_id": "eJ3ZV2P9Ks",
   "username": "returnperiod",
-  "carrot": 23,
-  "realm": "练气期二层",
+  "carrot": 37,
+  "realm": "练气期三层",
   "is_viewing": true,
   "invite_remaining": 0,
   "invite_count": 0,
@@ -19,11 +19,11 @@
     "ip": "14.136.69.242"
   },
   "last_sign": {
-    "at": "2026-11-07T06:36:05.693Z",
+    "at": "2026-11-08T06:41:50.797Z",
     "sign": "signed",
     "earn_point": 2,
-    "continuous_days": 6,
-    "carrot": 23,
+    "continuous_days": 7,
+    "carrot": 37,
     "is_viewing": true,
     "invite_remaining": 0
   }
