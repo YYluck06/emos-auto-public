@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-08T06:41:50.797Z",
+  "at": "2026-11-09T07:10:47.827Z",
   "user_id": "eJ3ZV2P9Ks",
   "username": "returnperiod",
   "carrot": 37,
@@ -19,10 +19,10 @@
     "ip": "14.136.69.242"
   },
   "last_sign": {
-    "at": "2026-11-08T06:41:50.797Z",
+    "at": "2026-11-09T07:10:47.827Z",
     "sign": "signed",
     "earn_point": 2,
-    "continuous_days": 7,
+    "continuous_days": 8,
     "carrot": 37,
     "is_viewing": true,
     "invite_remaining": 0
